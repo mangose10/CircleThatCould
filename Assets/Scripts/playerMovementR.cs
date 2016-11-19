@@ -21,7 +21,7 @@ public class playerMovementR : MonoBehaviour {
     private bool jump;
     [SerializeField]
     private float jumpSpeed;
-
+    
     Collider2D StandingCollider;
     Collider2D RollingCollider;
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class EnemyTAI : MonoBehaviour {
@@ -29,12 +30,17 @@ public class EnemyTAI : MonoBehaviour {
     [SerializeField]
     private GameObject player;
     private bool defenseFlag = false;
+    Collider2D StandingCollider;
+    Collider2D DefenseCollider;
+    [SerializeField]
 
     // Use this for initialization
     void Start () {
         tRigidBody = GetComponent<Rigidbody2D>();
         tAnimator = GetComponent<Animator>();
-	}
+        StandingCollider = GetComponent<BoxCollider2D>();
+        DefenseCollider = GetComponent<PolygonCollider2D>();
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -44,12 +50,29 @@ public class EnemyTAI : MonoBehaviour {
         timed += Time.deltaTime;
         timer = timerF(timer, timed);
         Flip(speed);
+        ChangeCollider();
         tAnimator.SetFloat("distance", Mathf.Abs(player.transform.position.x - transform.position.x));
         tAnimator.SetBool("facing", facingPlayer());
         if (Mathf.Abs(player.transform.position.x - transform.position.x) < 5 && facingPlayer())
             defenseFlag = true;
         Movement(isGroundedL, isGroundedR, isWalled);
 	}
+   void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider == player.GetComponent<PolygonCollider2D>() || other.collider == player.GetComponent<CircleCollider2D>())
+        {
+            if (!facingPlayer() && !defenseFlag)
+            {
+                Destroy(this.gameObject);
+                SceneManager.LoadScene("new");
+            }
+            else
+            {
+                SceneManager.LoadScene("test");
+            }
+        }
+    }
+
     bool facingPlayer(){
         if ((player.transform.position.y - transform.position.y < 5) && (player.transform.position.y - transform.position.y > -0.5)) {
             if (((player.transform.position.x > transform.position.x) && (speed > 0)) || ((player.transform.position.x < transform.position.x) && (speed < 0)))
@@ -64,6 +87,8 @@ public class EnemyTAI : MonoBehaviour {
     void Movement(bool isGroundedL, bool isGroundedR, bool isWalled){
         if (!defenseFlag)
             tRigidBody.velocity = new Vector2(speed, tRigidBody.velocity.y);
+        else
+            tRigidBody.constraints = RigidbodyConstraints2D.FreezePositionX|RigidbodyConstraints2D.FreezePositionY;
         if ((!isGroundedR|| !isGroundedL || isWalled) && timer && !defenseFlag) {
             speed *= -1;
             timer = false;
@@ -134,6 +159,19 @@ public class EnemyTAI : MonoBehaviour {
             Vector3 scale = transform.localScale;
             scale.x *= -1;
             transform.localScale = scale;
+        }
+    }
+    void ChangeCollider()
+    {
+        if (defenseFlag)
+        {
+            StandingCollider.enabled = false;
+            DefenseCollider.enabled = true;
+        }
+        else
+        {
+            StandingCollider.enabled = (true);
+            DefenseCollider.enabled = (false);
         }
     }
 }
