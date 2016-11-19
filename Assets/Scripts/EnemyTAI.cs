@@ -47,9 +47,7 @@ public class EnemyTAI : MonoBehaviour {
         tAnimator.SetFloat("distance", Mathf.Abs(player.transform.position.x - transform.position.x));
         tAnimator.SetBool("facing", facingPlayer());
         if (Mathf.Abs(player.transform.position.x - transform.position.x) < 5 && facingPlayer())
-        {
             defenseFlag = true;
-        }
         Movement(isGroundedL, isGroundedR, isWalled);
 	}
     bool facingPlayer(){
