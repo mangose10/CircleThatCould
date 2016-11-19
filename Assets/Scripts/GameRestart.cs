@@ -2,8 +2,9 @@
 using System.Collections;
 
 public class GameRestart : MonoBehaviour {
-    
-    //Tesitng g
+
+    public GameObject player;
+    public GameObject enemyT;
 
     string SceneName;
     // Use this for initialization
@@ -15,16 +16,25 @@ public class GameRestart : MonoBehaviour {
 	void Update () {
 	
 	}
-    
 
     void OnTriggerEnter2D(Collider2D other)
     {
-         Application.LoadLevel(SceneName);
+     if(other == player.GetComponent<Collider2D>())  
+       Application.LoadLevel(SceneName);
+
+        if (other == enemyT.GetComponent<Collider2D>())
+        {
+            Destroy(enemyT);
+            other = null;
+        }
+
+        Debug.Log("Hit");
         
-        //Debug.Log("Hit!");
     }
-    void OnTriggerExit2D(Collider2D other)
+
+    /*void OnTriggerExit2D(Collider2D player)
     {
         Application.LoadLevel(SceneName);
     }
+       */
 }
