@@ -33,7 +33,6 @@ public class EnemyTAI : MonoBehaviour {
     Collider2D StandingCollider;
     Collider2D DefenseCollider;
     [SerializeField]
-    Canvas canvas;
 
     // Use this for initialization
     void Start () {
