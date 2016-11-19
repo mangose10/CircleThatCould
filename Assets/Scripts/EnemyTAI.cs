@@ -64,17 +64,15 @@ public class EnemyTAI : MonoBehaviour {
     void Movement(bool isGroundedL, bool isGroundedR, bool isWalled){
         if (!defenseFlag)
             tRigidBody.velocity = new Vector2(speed, tRigidBody.velocity.y);
-        Debug.Log(tRigidBody.velocity.x);
         if ((!isGroundedR|| !isGroundedL || isWalled) && timer && !defenseFlag) {
             speed *= -1;
-            Debug.Log("hit");
             timer = false;
             timed = 0;
         }
         
     }
     bool timerF(bool timer, float timed){
-        if (timed >= 1) { return true; }
+        if (timed >= .2) { return true; }
         else { return false; }
     }
 

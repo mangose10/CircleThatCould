@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameRestart : MonoBehaviour {
@@ -19,17 +20,16 @@ public class GameRestart : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-     if(other == player.GetComponent<Collider2D>())  
-       Application.LoadLevel(SceneName);
+        Debug.Log(other);
+        if(other == player.GetComponent<PolygonCollider2D>() || other == player.GetComponent<CircleCollider2D>())  
+            SceneManager.LoadScene(SceneName);
 
         if (other == enemyT.GetComponent<Collider2D>())
-        {
             Destroy(enemyT);
-            other = null;
-        }
+            
 
-        Debug.Log("Hit");
         
+        other = null;
     }
 
     /*void OnTriggerExit2D(Collider2D player)
