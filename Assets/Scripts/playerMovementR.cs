@@ -10,6 +10,8 @@ public class playerMovementR : MonoBehaviour {
     [SerializeField]
     private Transform[] groundPoints;
     [SerializeField]
+    private Transform[] wallPoints;
+    [SerializeField]
     private float groundRadius;
     private bool facingRight = true;
     [SerializeField]
@@ -59,8 +61,10 @@ public class playerMovementR : MonoBehaviour {
     }
 
     void Movement(float horizontal, float vertical) {
-
-        myRigidBody.velocity = new Vector2(horizontal*speed, myRigidBody.velocity.y);
+        if (!isWalled())
+            myRigidBody.velocity = new Vector2(horizontal * speed, myRigidBody.velocity.y);
+        else
+            myRigidBody.AddForce(new Vector2(0, -2));
         
         if (isGrounded && (vertical > 0.2)){
             jump = true;
@@ -89,6 +93,25 @@ public class playerMovementR : MonoBehaviour {
 
                 for (int i = 0; i < colliders.Length; i++){
                     if (colliders[i].gameObject != gameObject){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    private bool isWalled()
+    {
+        if (myRigidBody.velocity.y <= 0)
+        {
+            foreach (Transform point in wallPoints)
+            {
+                Collider2D[] wcolliders = Physics2D.OverlapCircleAll(point.position, groundRadius*4, whatIsGround);
+
+                for (int i = 0; i < wcolliders.Length; i++)
+                {
+                    if (wcolliders[i].gameObject != gameObject)
+                    {
                         return true;
                     }
                 }
