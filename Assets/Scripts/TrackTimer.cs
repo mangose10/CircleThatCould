@@ -34,7 +34,7 @@ public class TrackTimer : MonoBehaviour {
                 hour += 1;
             }
             timedis = ((hour/10).ToString() + (hour%10).ToString() + ":" + (min/10).ToString() + (min%10).ToString() + ":" + ((Mathf.Floor(sec/10)%10).ToString() + (Mathf.Floor(sec)%10).ToString()));
-            text.text = timedis;
+            text.text = "You Win!";
         }
 	
 	}
