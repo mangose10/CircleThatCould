@@ -19,7 +19,7 @@ public class GameRestart : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-     if(other == player.GetComponent<Collider2D>())  
+     if(other == player.GetComponent<CircleCollider2D>() || player.GetComponent<PolygonCollider2D>())   
        Application.LoadLevel(SceneName);
 
         if (other == enemyT.GetComponent<Collider2D>())
