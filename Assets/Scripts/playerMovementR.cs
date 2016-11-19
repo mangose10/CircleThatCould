@@ -61,7 +61,7 @@ public class playerMovementR : MonoBehaviour {
     }
 
     void Movement(float horizontal, float vertical) {
-        if (!isWalled())
+        if (!isWalled() || isGrounded)
             myRigidBody.velocity = new Vector2(horizontal * speed, myRigidBody.velocity.y);
         else
             myRigidBody.AddForce(new Vector2(0, -2));
